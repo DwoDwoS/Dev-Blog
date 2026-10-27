@@ -25,7 +25,7 @@ const { Content } = await render(ressource);
         <Header />
         <main>
             <article>
-                <p class="back-link"><a href="/ressources/">← Retour aux ressources</a></p>
+                <p class="back-link"><a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/ressources/`}>← Retour aux ressources</a></p>
                 <header class="title">
                     <p class="type">{ressource.data.type}</p>
                     <h1>{ressource.data.title}</h1>

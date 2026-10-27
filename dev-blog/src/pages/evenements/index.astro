@@ -1,0 +1,99 @@
+---
+import { getCollection } from "astro:content";
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+
+const posts = (await getCollection("evenements")).sort(
+  (a, b) => a.data.date.valueOf() - b.data.date.valueOf(),
+);
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <BaseHead
+      title="Événements"
+      description="Découvrez les événements à venir."
+    />
+    <style>
+      ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+      }
+      ul li {
+        box-sizing: border-box;
+        width: calc(50% - 1rem);
+        padding: 1.5rem;
+        border: 1px solid rgb(var(--gray-light));
+        border-radius: 12px;
+        background: white;
+      }
+      ul li * {
+        text-decoration: none;
+        transition: 0.2s ease;
+      }
+      ul li a {
+        display: block;
+      }
+      .title {
+        margin: 0;
+        color: rgb(var(--black));
+        line-height: 1;
+      }
+      .type {
+        display: inline-block;
+        margin-top: 0.75rem;
+        color: rgb(var(--gray));
+        font-size: 0.8rem;
+        text-transform: uppercase;
+      }
+      ul li a:hover h2 {
+        color: rgb(var(--accent));
+      }
+      @media (max-width: 720px) {
+        ul {
+          gap: 0.5em;
+        }
+        ul li {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1>Événements</h1>
+      <p>Retrouvez ici les événements à venir et inscrivez-vous.</p>
+      <section>
+        <ul>
+          {
+            posts.map((post) => (
+              <li>
+                <a
+                  href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/evenements/${post.id}/`}
+                >
+                  <h2 class="title">{post.data.title}</h2>
+                  <p>{post.data.description}</p>
+                </a>
+                <span class="type">
+                  {post.data.date.toLocaleDateString("fr-FR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
